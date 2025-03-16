@@ -88,5 +88,5 @@ MIT License - see LICENSE file for details
 
 CIRCULAR GLOBAL LEDGERS, INC. - USA
 
-- Original Python Version: Gianluca De Novi, PhD
+- Original JS Version: Gianluca De Novi, PhD
 - Java Implementation: Danny De Novi 
