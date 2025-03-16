@@ -32,32 +32,7 @@ mvn clean install
 
 ## Usage Example
 
-```java
-import io.circularlabs.enterprise.CEPAccount;
-import io.circularlabs.enterprise.CCertificate;
 
-public class Example {
-    public static void main(String[] args) {
-        try {
-            // Create and open an account
-            CEPAccount account = new CEPAccount();
-            account.open("your_account_address");
-            
-            // Set network and update account
-            account.setNetwork("testnet");
-            account.updateAccount();
-            
-            // Create and submit a certificate
-            CCertificate cert = new CCertificate();
-            cert.setData("Your certificate data");
-            account.submitCertificate(cert.getJsonCertificate(), "your_private_key");
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-}
-```
 
 ## API Documentation
 
