@@ -144,6 +144,7 @@ public class CEPAccount {
             String responseBody = response.body().string();
             System.out.println("Network response: " + responseBody);
             Map<String, Object> data = objectMapper.readValue(responseBody, new TypeReference<Map<String, Object>>() {});
+            this.nagUrl = data.get("url");
             return (String) data.get("url");
         }
     }
@@ -180,7 +181,7 @@ public class CEPAccount {
      * @return Signature in hex format
      * @throws Exception if signing fails
      */
-    public String signData(String message, String privateKeyHex) throws Exception {
+    private String signData(String message, String privateKeyHex) throws Exception {
         if (this.address == null) {
             throw new Exception("Account is not open");
         }
@@ -232,7 +233,7 @@ public class CEPAccount {
      * @return Transaction data
      * @throws Exception if request fails
      */
-    public Map<String, Object> getTransactionById(String txId, long start, long end) throws Exception {
+    private Map<String, Object> getTransactionById(String txId, long start, long end) throws Exception {
         Map<String, String> data = new HashMap<>();
         data.put("Blockchain", Helper.hexFix(this.blockchain));
         data.put("ID", Helper.hexFix(txId));
