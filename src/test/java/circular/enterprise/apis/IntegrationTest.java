@@ -34,22 +34,17 @@ public class IntegrationTest {
         // Set network to testnet and configure NAG URL
         String networkUrl = account.setNetwork("testnet");
         assertNotNull(networkUrl);
-        account.setNagUrl(networkUrl);
         
         // Update account to get current nonce
         assertTrue(account.updateAccount());
         
         // Create a test message and sign it
         String message = "Test message from Java implementation";
-        String signature = account.signData(message, PRIVATE_KEY);
-        System.out.println("Message signature: " + signature);
         
         // Create and submit a certificate
         String certificateData = String.format(
-            "{\"message\":\"%s\",\"signature\":\"%s\",\"timestamp\":%d}",
+            "{\"message\":\"%s\"}",
             message,
-            signature,
-            System.currentTimeMillis()
         );
         
         account.submitCertificate(certificateData, PRIVATE_KEY);
@@ -59,9 +54,11 @@ public class IntegrationTest {
         if (txId != null && !txId.isEmpty()) {
             Map<String, Object> outcome = account.getTransactionOutcome(txId, 30, 2);
             assertEquals(200, outcome.get("Result"));
+            Map<String, Object> resp = (Map<String, Object>) outcome.get("Response");
+            String blockID = (String) response.get("BlockID");
             
             // Query the transaction
-            Map<String, Object> txData = account.getTransactionById(txId, 0, 10);
+            Map<String, Object> txData = account.getTransactiond(blockID, txId);
             assertEquals(200, txData.get("Result"));
         }
     }
@@ -76,7 +73,6 @@ public class IntegrationTest {
         // Open account first
         assertTrue(account.open(ADDRESS));
         String networkUrl = account.setNetwork("devnet");
-        account.setNagUrl(networkUrl);
         
         // Create and submit a test certificate
         String certificateData = "{\"test\":\"data\",\"timestamp\":\"" + System.currentTimeMillis() + "\"}";
@@ -109,7 +105,6 @@ public class IntegrationTest {
         // Set network to testnet and configure NAG URL
         String networkUrl = account.setNetwork("testnet");
         assertNotNull(networkUrl);
-        account.setNagUrl(networkUrl);
         System.out.println("Connected to testnet: " + networkUrl);
         
         // Update account to get current nonce
@@ -118,14 +113,11 @@ public class IntegrationTest {
         
         // Create and sign "Hello World" message
         String message = "Hello World";
-        String signature = account.signData(message, PRIVATE_KEY);
-        System.out.println("Message signature: " + signature);
         
         // Create and submit the certificate
         String certificateData = String.format(
-            "{\"message\":\"%s\",\"signature\":\"%s\",\"timestamp\":%d}",
+            "{\"message\":\"%s\",\"timestamp\":%d}",
             message,
-            signature,
             System.currentTimeMillis()
         );
         
